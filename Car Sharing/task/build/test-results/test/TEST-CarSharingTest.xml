@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CarSharingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-08T20:29:46" hostname="RECON" time="0.619">
+  <properties/>
+  <testcase name="start" classname="CarSharingTest" time="0.619"/>
+  <system-out><![CDATA[?[1;31m
+Start test 1?[0m
+Creating table in given database...
+Created table Company in given database...
+Goodbye!
+?[1;31m
+Start test 2?[0m
+Creating table in given database...
+Created table Company in given database...
+Goodbye!
+?[1;31m
+Start test 3?[0m
+?[1;31m
+Start test 4?[0m
+?[1;31m
+Start test 5?[0m
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
