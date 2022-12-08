@@ -19,18 +19,15 @@ public class Main {
 
         try (Connection conn = DriverManager.getConnection(dbUrl);
              Statement stmt = conn.createStatement()){
-            System.out.println("Creating table in given database...");
             String sql =  "CREATE TABLE IF NOT EXISTS COMPANY  " +
                     "(id INTEGER not NULL, " +
                     " NAME  VARCHAR(255)," +
                     " PRIMARY KEY ( id ))";
             stmt.executeUpdate(sql);
-            System.out.println("Created table Company in given database...");
             conn.setAutoCommit(true);
         } catch(SQLException se) {
             //Handle errors for JDBC
             se.printStackTrace();
         }
-        System.out.println("Goodbye!");
     }
 }
