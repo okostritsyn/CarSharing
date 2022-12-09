@@ -17,7 +17,7 @@ public class CompanyDAO {
         this.jdbcController = jdbcController;
     }
 
-    private final String SQL_GET_ALL = "select name from company ORDER BY company.id";
+    private final String SQL_GET_ALL = "select name,id from company ORDER BY company.id";
     private final String SQL_INSERT_COMPANY = "insert into company (name) values('value_name')";
 
     public boolean create(Company company) {
@@ -25,7 +25,7 @@ public class CompanyDAO {
     }
 
     public List<Company> findAll() throws SQLException {
-        List<Company> listOfCompanies = jdbcController.query(SQL_GET_ALL,new CompanyMapper());
+        List<Company> listOfCompanies = (List<Company>) jdbcController.query(SQL_GET_ALL,new CompanyMapper());
         return listOfCompanies;
     }
 

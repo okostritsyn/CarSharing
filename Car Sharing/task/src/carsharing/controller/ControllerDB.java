@@ -19,12 +19,12 @@ public class ControllerDB {
         return dbName;
     }
 
-    public String getDBURL() {
+    public String getDbURL() {
         return "jdbc:h2:./src/carsharing/db/"+getDbName();
     }
 
     public void initDB() {
-        try (Connection conn = DriverManager.getConnection(getDBURL());
+        try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS COMPANY  " +
                     "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
@@ -39,17 +39,14 @@ public class ControllerDB {
         }
     }
 
-    public List<Company> query(String sql, CompanyMapper companyMapper) {
-        List<Company> companyList = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(getDBURL());
+    public List<?> query(String sql, CompanyMapper companyMapper) {
+        List<?> companyList = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
             conn.setAutoCommit(true);
 
             ResultSet resultSet = stmt.executeQuery(sql);
-
-            while(resultSet.next()){
-                companyList.add(companyMapper.mapRow(resultSet));
-            }
+            return companyMapper.mapRows(resultSet);
 
         } catch (SQLException se) {
             //Handle errors for JDBC
@@ -59,7 +56,7 @@ public class ControllerDB {
     }
 
     public int update(String sql) {
-        try (Connection conn = DriverManager.getConnection(getDBURL());
+        try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
             conn.setAutoCommit(true);
 

@@ -1,16 +1,26 @@
 package carsharing.mapper;
 
-import carsharing.dao.CompanyDAO;
 import carsharing.model.Company;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompanyMapper {
     public Company mapRow(ResultSet resultSet) throws SQLException {
         Company currCompany = new Company();
         currCompany.setName(resultSet.getString("name"));
+        currCompany.setId(resultSet.getInt("id"));
         return currCompany;
     }
 
+    public List<Company> mapRows(ResultSet resultSet) throws SQLException {
+        List<Company> companyList = new ArrayList<>();
 
+        while(resultSet.next()){
+            companyList.add(mapRow(resultSet));
+        }
+
+        return companyList;
+    }
 }

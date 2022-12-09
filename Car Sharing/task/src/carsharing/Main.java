@@ -5,7 +5,6 @@ import carsharing.view.MainView;
 import carsharing.view.View;
 
 public class Main {
-    // JDBC driver name and database URL
     public static void main(String[] args) {
         String currDbName = "carsharing.mv";
         for (int i = 0; i < args.length; i++) {
