@@ -1,17 +1,5 @@
 type: edu
 files:
-- name: src/carsharing/Main.java
-  visible: true
-  text: |-
-    package carsharing;
-
-    public class Main {
-
-        public static void main(String[] args) {
-            // write your code here
-        }
-    }
-  learner_created: false
 - name: test/CarSharingTest.java
   visible: false
   text: |
@@ -347,6 +335,39 @@ files:
         }
     }
   learner_created: false
+- name: src.trace.db
+  visible: true
+  learner_created: true
+- name: src/carsharing/Main.java
+  visible: true
+  text: |-
+    package carsharing;
+
+    public class Main {
+
+        public static void main(String[] args) {
+            // write your code here
+        }
+    }
+  learner_created: false
+- name: src/carsharing/controller/Controller.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/view/View.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/view/MainView.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/model/Company.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/controller/ControllerDB.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/140/stages/759/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Fri, 09 Dec 2022 12:51:54 UTC
 record: -1
