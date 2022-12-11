@@ -1,12 +1,20 @@
 package carsharing.view;
 import carsharing.controller.Controller;
+import carsharing.model.Company;
 
 
-public class CompanyMenuView implements View {
+public class CompanyCarMenuView implements View {
+    private Company company;
+
+    public CompanyCarMenuView(Company company) {
+        this.company = company;
+    }
+
     @Override
     public void printInfo() {
-        System.out.println("1. Company list");
-        System.out.println("2. Create a company");
+        System.out.println(company+" company");
+        System.out.println("1. Car list");
+        System.out.println("2. Create a car");
         System.out.println("0. Back");
     }
 
@@ -20,9 +28,9 @@ public class CompanyMenuView implements View {
         }
 
         if (selectedElement==0) {
-            return Controller.MAIN_MENU_ACTION;
+            return Controller.COMPANY_MENU;
         }
 
-        return selectedElement  + Controller.SHIFT_MENU_COMPANY;
+        return selectedElement+Controller.SHIFT_MENU_CAR;
     }
 }

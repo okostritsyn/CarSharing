@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompanyController extends Controller {
-    private final List<Controller> controllers = new ArrayList<>(2);
+    private final List<Controller> controllers = new ArrayList<>(3);
 
     public CompanyController(View mainView){
-        super(mainView,Controller.COUNTRY_MENU);
+        super(mainView,Controller.COMPANY_MENU);
         controllers.add(this);
-        controllers.add(new CompanyListController(new CompanyListView(),Controller.READ_COUNTRY_LIST));
-        controllers.add(new AddCompanyController(new AddCompanyView(),Controller.ADD_COUNTRY));
+        controllers.add(new CompanyListController(new CompanyListView(),Controller.READ_COMPANY_LIST));
+        controllers.add(new AddCompanyController(new AddCompanyView(),Controller.ADD_COMPANY));
     }
 
     @Override
@@ -27,7 +27,7 @@ public class CompanyController extends Controller {
 
         if (action != 0) {
             try {
-                return processMenu(action,Controller.COUNTRY_MENU,controllers);
+                return processMenu(action,Controller.COMPANY_MENU,controllers);
             } catch (EmptyListOfControllersException e) {
                 System.out.println("There is no controllers to process! "+e);
             }

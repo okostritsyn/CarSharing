@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompanyMapper {
+public class CompanyMapper implements Mapper<Company>{
+    @Override
     public Company mapRow(ResultSet resultSet) throws SQLException {
         Company currCompany = new Company();
         currCompany.setName(resultSet.getString("name"));
@@ -14,6 +15,7 @@ public class CompanyMapper {
         return currCompany;
     }
 
+    @Override
     public List<Company> mapRows(ResultSet resultSet) throws SQLException {
         List<Company> companyList = new ArrayList<>();
 

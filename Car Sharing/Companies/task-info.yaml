@@ -365,9 +365,12 @@ files:
 - name: src/carsharing/controller/ControllerDB.java
   visible: true
   learner_created: true
-feedback_link: https://hyperskill.org/projects/140/stages/759/implement#comment
+- name: src/carsharing/model/Car.java
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/11502#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Fri, 09 Dec 2022 14:33:04 UTC
-record: -1
+record: 2

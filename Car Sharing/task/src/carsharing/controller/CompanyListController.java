@@ -4,6 +4,7 @@ package carsharing.controller;
 import carsharing.dao.CompanyDAO;
 import carsharing.model.Company;
 import carsharing.service.CompanyService;
+import carsharing.view.CompanyCarMenuView;
 import carsharing.view.CompanyListView;
 import carsharing.view.View;
 
@@ -20,16 +21,20 @@ public class CompanyListController extends Controller{
     public int process() {
         view.printInfo();
 
-        List<Company> companyList = null;
-        try {
-            companyList = new CompanyService(new CompanyDAO(getControllerDB())).listAll();
-            ((CompanyListView) view).printCompanyList(companyList);
-            if (companyList.isEmpty()) return Controller.COUNTRY_MENU;
-        } catch (SQLException e) {
-            System.out.println("An error while fetching list ");
-            e.printStackTrace();
-        }
+        List<Company> companyList = new CompanyService(new CompanyDAO(getControllerDB())).listAll();
+        ((CompanyListView) view).printCompanyList(companyList);
+        if (companyList.isEmpty()) return Controller.COMPANY_MENU;
 
-        return Controller.COUNTRY_MENU;
+        int action = view.readAction();
+        int finAction;
+        if (action != 0) {
+            do {
+            var company = companyList.get(action-1);
+            View carView = new CompanyCarMenuView(company);
+            Controller carController = new CompanyCarController(carView,company);
+            finAction = carController.process();
+            } while (finAction != Controller.COMPANY_MENU);
+        }
+        return Controller.COMPANY_MENU;
     }
 }

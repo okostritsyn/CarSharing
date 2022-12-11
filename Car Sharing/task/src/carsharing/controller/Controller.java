@@ -3,19 +3,22 @@ package carsharing.controller;
 import carsharing.exceptions.EmptyListOfControllersException;
 import carsharing.view.View;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 public abstract class Controller {
     public static final int MAIN_MENU_ACTION = 0;
-    public static final int FINISH_ACTION = 4;
-    public static final int COUNTRY_MENU = 1;
-    public static final int SHIFT_MENU_COUNTRY = 1;
-    public static final int ADD_COUNTRY = 3;
-    public static final int READ_COUNTRY_LIST = 2;
+    public static final int FINISH_ACTION = 9;
+    public static final int COMPANY_MENU = 1;
+    public static final int ADD_COMPANY = 3;
+    public static final int READ_COMPANY_LIST = 2;
+
+    public static final int SHIFT_MENU_COMPANY = 1;
+    public static final int SHIFT_MENU_CAR = 4;
+
+    public static final int COMPANY_CAR_MENU = 4;
+    public static final int ADD_CAR = 6;
+    public static final int READ_CAR_LIST = 5;
+
     protected View view;
     protected int action;
     protected static ControllerDB controllerDB;

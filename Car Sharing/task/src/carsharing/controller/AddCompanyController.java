@@ -33,6 +33,6 @@ public class AddCompanyController extends Controller{
         if (!currName.isEmpty()) {
             createNewCompany(currName);
         }
-        return Controller.COUNTRY_MENU;
+        return Controller.COMPANY_MENU;
     }
 }

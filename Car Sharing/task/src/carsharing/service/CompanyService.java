@@ -18,7 +18,7 @@ public class CompanyService {
         return companyDAO.create(company);
     }
 
-    public List<Company> listAll() throws SQLException {
+    public List<Company> listAll() {
         return companyDAO.findAll();
     }
 }

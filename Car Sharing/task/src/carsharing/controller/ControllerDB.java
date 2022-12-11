@@ -1,8 +1,6 @@
 package carsharing.controller;
 
-import carsharing.dao.CompanyDAO;
-import carsharing.mapper.CompanyMapper;
-import carsharing.model.Company;
+import carsharing.mapper.Mapper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class ControllerDB {
             String sql = "CREATE TABLE IF NOT EXISTS COMPANY  " +
                     "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
                     " NAME  VARCHAR(255) NOT NULL," +
-                    " UNIQUE KEY acct_authority_name_UNIQUE (NAME)," +
+                    " UNIQUE (NAME)," +
                     "PRIMARY KEY ( ID ))";
             stmt.executeUpdate(sql);
             conn.setAutoCommit(true);
@@ -39,8 +37,23 @@ public class ControllerDB {
         }
     }
 
-    public List<?> query(String sql, CompanyMapper companyMapper) {
-        List<?> companyList = new ArrayList<>();
+    public <T>T queryForObject(String sql, Mapper<T> mapper) {
+        try (Connection conn = DriverManager.getConnection(getDbURL());
+             Statement stmt = conn.createStatement()) {
+            conn.setAutoCommit(true);
+
+            ResultSet resultSet = stmt.executeQuery(sql);
+            return mapper.mapRow(resultSet);
+
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }
+        return null;
+    }
+
+    public <T> List<T> query(String sql, Mapper<T> companyMapper) {
+        List<T> companyList = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
             conn.setAutoCommit(true);

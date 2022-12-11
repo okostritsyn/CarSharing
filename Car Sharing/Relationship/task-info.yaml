@@ -1,17 +1,5 @@
 type: edu
 files:
-- name: src/carsharing/Main.java
-  visible: true
-  text: |-
-    package carsharing;
-
-    public class Main {
-
-        public static void main(String[] args) {
-            // write your code here
-        }
-    }
-  learner_created: false
 - name: test/CarSharingTest.java
   visible: false
   text: |
@@ -555,6 +543,295 @@ files:
         }
     }
   learner_created: false
-feedback_link: https://hyperskill.org/projects/140/stages/760/implement#comment
+- name: src/carsharing/view/MainView.java
+  visible: true
+  text: |
+    package carsharing.view;
+
+    import carsharing.controller.Controller;
+
+    public class MainView implements View {
+
+        @Override
+        public int readAction() {
+            int selectedElement = View.super.readAction();
+
+            while (!checkAction(selectedElement, 0, 2)) {
+                System.out.println("incorrect number! Make your choice: ");
+                selectedElement = View.super.readAction();
+            }
+
+            if (selectedElement == 0) {
+                return Controller.FINISH_ACTION;
+            }
+            return selectedElement;
+        }
+
+        @Override
+        public void printInfo() {
+            System.out.println("1. Log in as a manager");
+            System.out.println("0. Exit");
+        }
+    }
+  learner_created: true
+- name: src/carsharing/view/View.java
+  visible: true
+  text: |
+    package carsharing.view;
+
+    import java.io.BufferedReader;
+    import java.io.IOException;
+    import java.io.InputStreamReader;
+
+    public interface View {
+        void printInfo();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        default String collectDataFromUser(String message, String currentValue) {
+            System.out.println(message);
+            if (!currentValue.isEmpty()) System.out.println("Current value: " + currentValue);
+            String currString = null;
+            try {
+                currString = readInputString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return currString != null && currString.isEmpty() ? currentValue : currString;
+        }
+
+        default boolean checkAction(int selectedElement, int minElem, int maxElem) {
+            return selectedElement >= minElem && selectedElement <= maxElem;
+        }
+
+        default int readAction() {
+            int selectedElement;
+            while (true) {
+                try {
+                    selectedElement = Integer.parseInt(readInputString());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("incorrect number! Make your choice:");
+                } catch (IOException e) {
+                    System.out.println("An error while reading input number!");
+                    System.exit(0);
+                }
+            }
+            return selectedElement;
+        }
+
+        default String readInputString() throws IOException {
+            String data;
+            try {
+                data = reader.readLine();
+            } catch (IOException e) {
+                throw new IOException(e);
+            }
+            return data.trim();
+        }
+    }
+  learner_created: true
+- name: src.trace.db
+  visible: true
+  learner_created: true
+- name: src/carsharing/Main.java
+  visible: true
+  text: |-
+    package carsharing;
+
+    public class Main {
+
+        public static void main(String[] args) {
+            // write your code here
+        }
+    }
+  learner_created: false
+- name: src/carsharing/model/Car.java
+  visible: true
+  text: |
+    package carsharing.model;
+
+    public class Car {
+    }
+  learner_created: true
+- name: src/carsharing/mapper/Mapper.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/controller/ControllerDB.java
+  visible: true
+  text: |
+    package carsharing.controller;
+
+    import carsharing.dao.CompanyDAO;
+    import carsharing.mapper.CompanyMapper;
+    import carsharing.model.Company;
+
+    import java.sql.*;
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class ControllerDB {
+        private final String dbName;
+
+        public ControllerDB(String dbName) {
+            this.dbName = dbName;
+        }
+
+        public String getDbName() {
+            return dbName;
+        }
+
+        public String getDbURL() {
+            return "jdbc:h2:./src/carsharing/db/"+getDbName();
+        }
+
+        public void initDB() {
+            try (Connection conn = DriverManager.getConnection(getDbURL());
+                 Statement stmt = conn.createStatement()) {
+                String sql = "CREATE TABLE IF NOT EXISTS COMPANY  " +
+                        "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
+                        " NAME  VARCHAR(255) NOT NULL," +
+                        " UNIQUE KEY acct_authority_name_UNIQUE (NAME)," +
+                        "PRIMARY KEY ( ID ))";
+                stmt.executeUpdate(sql);
+                conn.setAutoCommit(true);
+            } catch (SQLException se) {
+                //Handle errors for JDBC
+                se.printStackTrace();
+            }
+        }
+
+        public List<?> query(String sql, CompanyMapper companyMapper) {
+            List<?> companyList = new ArrayList<>();
+            try (Connection conn = DriverManager.getConnection(getDbURL());
+                 Statement stmt = conn.createStatement()) {
+                conn.setAutoCommit(true);
+
+                ResultSet resultSet = stmt.executeQuery(sql);
+                return companyMapper.mapRows(resultSet);
+
+            } catch (SQLException se) {
+                //Handle errors for JDBC
+                se.printStackTrace();
+            }
+            return companyList;
+        }
+
+        public int update(String sql) {
+            try (Connection conn = DriverManager.getConnection(getDbURL());
+                 Statement stmt = conn.createStatement()) {
+                conn.setAutoCommit(true);
+
+                return stmt.executeUpdate(sql);
+            } catch (SQLException se) {
+                //Handle errors for JDBC
+                se.printStackTrace();
+            }
+            return 0;
+        }
+    }
+  learner_created: true
+- name: src/carsharing/controller/Controller.java
+  visible: true
+  text: |
+    package carsharing.controller;
+
+    import carsharing.exceptions.EmptyListOfControllersException;
+    import carsharing.view.View;
+
+    import java.sql.Connection;
+    import java.sql.DriverManager;
+    import java.sql.SQLException;
+    import java.sql.Statement;
+    import java.util.List;
+
+    public abstract class Controller {
+        public static final int MAIN_MENU_ACTION = 0;
+        public static final int FINISH_ACTION = 4;
+        public static final int COUNTRY_MENU = 1;
+        public static final int SHIFT_MENU_COUNTRY = 1;
+        public static final int ADD_COUNTRY = 3;
+        public static final int READ_COUNTRY_LIST = 2;
+        protected View view;
+        protected int action;
+        protected static ControllerDB controllerDB;
+
+        protected Controller(View view, int action){
+            this.view = view;
+            this.action = action;
+        }
+
+        public static ControllerDB getControllerDB() {
+            return controllerDB;
+        }
+
+        public static void initialization(String currDBName) {
+            controllerDB = new ControllerDB(currDBName);
+            controllerDB.initDB();
+        }
+
+        public boolean canProcess(int action) {
+            return this.action == action;
+        }
+
+        public int process() {
+            view.printInfo();
+            return view.readAction();
+        }
+
+        public static void finishWork() {
+
+        }
+
+        public int processMenu(int action, int finishAction, List<Controller> controllers) throws EmptyListOfControllersException {
+            if (controllers.isEmpty()){
+                throw new EmptyListOfControllersException("There is no controllers to process! ");
+            }
+            do {
+                for (Controller controller : controllers) {
+                    if (controller.canProcess(action)) {
+                        action = controller.process();
+                    }
+                }
+            } while (action != finishAction);
+            return action;
+        }
+    }
+  learner_created: true
+- name: src/carsharing/dao/Dao.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/model/Company.java
+  visible: true
+  text: |
+    package carsharing.model;
+
+    public class Company {
+        private String name;
+        private Integer id;
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+    }
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/11503#comment
 status: Unchecked
 record: -1
