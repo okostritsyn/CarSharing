@@ -21,7 +21,7 @@ public class AddCarController extends Controller{
     private void createNewCar(String name){
         var car = new Car();
         car.setName(name);
-        car.setCompany(company);
+        car.setCompanyId(company.getId());
         var status = new CarService(new CarDAO(getControllerDB())).save(car);
         if (status) {
             System.out.println("The car " + name + " successfully created!");

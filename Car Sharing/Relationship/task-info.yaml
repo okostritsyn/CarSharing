@@ -646,17 +646,6 @@ files:
         }
     }
   learner_created: false
-- name: src/carsharing/model/Car.java
-  visible: true
-  text: |
-    package carsharing.model;
-
-    public class Car {
-    }
-  learner_created: true
-- name: src/carsharing/mapper/Mapper.java
-  visible: true
-  learner_created: true
 - name: src/carsharing/controller/ControllerDB.java
   visible: true
   text: |
@@ -798,9 +787,6 @@ files:
         }
     }
   learner_created: true
-- name: src/carsharing/dao/Dao.java
-  visible: true
-  learner_created: true
 - name: src/carsharing/model/Company.java
   visible: true
   text: |
@@ -832,6 +818,23 @@ files:
         }
     }
   learner_created: true
+- name: src/carsharing/dao/Dao.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/mapper/Mapper.java
+  visible: true
+  learner_created: true
+- name: src/carsharing/model/Car.java
+  visible: true
+  text: |
+    package carsharing.model;
+
+    public class Car {
+    }
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/11503#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sun, 11 Dec 2022 21:17:23 UTC
 record: -1

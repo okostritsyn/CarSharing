@@ -16,7 +16,7 @@ public class CarDAO implements Dao{
 
     private static final String SQL_GET_ALL = "select name,id,company_id from car ORDER BY car.id";
     private static final String SQL_INSERT_CAR = "insert into car (name,company_id) values('value_name','value_id')";
-    private static final String SQL_GET_BY_OWNER = "select name,id,company_id from car ORDER BY car.id where company.owner_Id = 'value_id'";
+    private static final String SQL_GET_BY_OWNER = "select name,id,company_id from car where owner_id = 'value_id' ORDER BY car.id";
 
     @Override
     public boolean create(Object obj) {
@@ -40,7 +40,7 @@ public class CarDAO implements Dao{
     @Override
     public List<Car> findByOwner(String ownerField, int id) {
         return jdbcController.query(SQL_GET_BY_OWNER
-                        .replace("owner_Id",ownerField)
+                        .replace("owner_id",ownerField)
                         .replace("value_id",String.valueOf(id)),new CarMapper());
     }
 

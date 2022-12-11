@@ -22,14 +22,23 @@ public class ControllerDB {
     }
 
     public void initDB() {
+        String[] sqlRequests = {"CREATE TABLE IF NOT EXISTS COMPANY  " +
+                "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
+                " NAME  VARCHAR(255) NOT NULL," +
+                " UNIQUE (NAME)," +
+                "PRIMARY KEY ( ID ))",
+                "CREATE TABLE IF NOT EXISTS CAR  " +
+                        "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
+                        " NAME  VARCHAR(255) NOT NULL," +
+                        " COMPANY_ID  INTEGER NOT NULL," +
+                        " UNIQUE (NAME)," +
+                        "PRIMARY KEY ( ID ),"+
+                        "FOREIGN KEY (COMPANY_ID) REFERENCES COMPANY(ID))"};
         try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS COMPANY  " +
-                    "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
-                    " NAME  VARCHAR(255) NOT NULL," +
-                    " UNIQUE (NAME)," +
-                    "PRIMARY KEY ( ID ))";
-            stmt.executeUpdate(sql);
+            for (int i = 0; i < sqlRequests.length; i++) {
+                stmt.executeUpdate(sqlRequests[i]);
+            }
             conn.setAutoCommit(true);
         } catch (SQLException se) {
             //Handle errors for JDBC

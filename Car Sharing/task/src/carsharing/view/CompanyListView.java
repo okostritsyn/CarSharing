@@ -26,7 +26,7 @@ public class CompanyListView implements View {
             Company currCompany = companyList.get(i);
             System.out.println((i+1)+". "+currCompany);
         }
-
+        System.out.println("0. Back");
         System.out.println("");
     }
 
@@ -40,7 +40,7 @@ public class CompanyListView implements View {
         }
 
         if (selectedElement==0) {
-            return Controller.COMPANY_MENU;
+            return Controller.MAIN_MENU_ACTION;
         }
 
         return selectedElement;
