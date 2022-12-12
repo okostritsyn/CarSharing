@@ -1,18 +1,6 @@
 type: edu
 custom_name: Welcome, customer!
 files:
-- name: src/carsharing/Main.java
-  visible: true
-  text: |-
-    package carsharing;
-
-    public class Main {
-
-        public static void main(String[] args) {
-            // write your code here
-        }
-    }
-  learner_created: false
 - name: test/CarSharingTest.java
   visible: false
   text: |
@@ -862,6 +850,430 @@ files:
         }
     }
   learner_created: false
+- name: src/carsharing/controller/Controller.java
+  visible: true
+  text: |
+    package carsharing.controller;
+
+    import carsharing.exceptions.EmptyListOfControllersException;
+    import carsharing.view.View;
+
+    import java.util.List;
+
+    public abstract class Controller {
+        public static final int MAIN_MENU_ACTION = 0;
+        public static final int FINISH_ACTION = 9;
+        public static final int COMPANY_MENU = 1;
+        public static final int ADD_COMPANY = 3;
+        public static final int READ_COMPANY_LIST = 2;
+
+        public static final int SHIFT_MENU_COMPANY = 1;
+        public static final int SHIFT_MENU_CAR = 4;
+
+        public static final int COMPANY_CAR_MENU = 4;
+        public static final int ADD_CAR = 6;
+        public static final int READ_CAR_LIST = 5;
+
+        protected View view;
+        protected int action;
+        protected static ControllerDB controllerDB;
+
+        protected Controller(View view, int action){
+            this.view = view;
+            this.action = action;
+        }
+
+        public static ControllerDB getControllerDB() {
+            return controllerDB;
+        }
+
+        public static void initialization(String currDBName) {
+            controllerDB = new ControllerDB(currDBName);
+            controllerDB.initDB();
+        }
+
+        public boolean canProcess(int action) {
+            return this.action == action;
+        }
+
+        public int process() {
+            view.printInfo();
+            return view.readAction();
+        }
+
+        public static void finishWork() {
+
+        }
+
+        public int processMenu(int action, int finishAction, List<Controller> controllers) throws EmptyListOfControllersException {
+            if (controllers.isEmpty()){
+                throw new EmptyListOfControllersException("There is no controllers to process! ");
+            }
+            do {
+                for (Controller controller : controllers) {
+                    if (controller.canProcess(action)) {
+                        action = controller.process();
+                    }
+                }
+            } while (action != finishAction);
+            return action;
+        }
+    }
+  learner_created: true
+- name: src/carsharing/model/Car.java
+  visible: true
+  text: |
+    package carsharing.model;
+
+    public class Car {
+        private String name;
+        private Integer id;
+        private Integer companyId;
+
+        public int getCompanyId() {
+            return companyId;
+        }
+
+        public void setCompanyId(int id) {
+            this.companyId = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+    }
+  learner_created: true
+- name: src/carsharing/model/Company.java
+  visible: true
+  text: |
+    package carsharing.model;
+
+    public class Company {
+        private String name;
+        private Integer id;
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+    }
+  learner_created: true
+- name: src/carsharing/view/MainView.java
+  visible: true
+  text: |
+    package carsharing.view;
+
+    import carsharing.controller.Controller;
+
+    public class MainView implements View {
+
+        @Override
+        public int readAction() {
+            int selectedElement = View.super.readAction();
+
+            while (!checkAction(selectedElement, 0, 2)) {
+                System.out.println("incorrect number! Make your choice: ");
+                selectedElement = View.super.readAction();
+            }
+
+            if (selectedElement == 0) {
+                return Controller.FINISH_ACTION;
+            }
+            return selectedElement;
+        }
+
+        @Override
+        public void printInfo() {
+            System.out.println("1. Log in as a manager");
+            System.out.println("0. Exit");
+        }
+    }
+  learner_created: true
+- name: src/carsharing/dao/Dao.java
+  visible: true
+  text: |
+    package carsharing.dao;
+
+    import java.util.List;
+
+    public interface Dao<T> {
+        List<T> findAll();
+        List<T> findByOwner(String ownerField, int id);
+        boolean create(T obj);
+        T findById(int id);
+    }
+  learner_created: true
+- name: src/carsharing/view/View.java
+  visible: true
+  text: |
+    package carsharing.view;
+
+    import java.io.BufferedReader;
+    import java.io.IOException;
+    import java.io.InputStreamReader;
+
+    public interface View {
+        void printInfo();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        default String collectDataFromUser(String message, String currentValue) {
+            System.out.println(message);
+            if (!currentValue.isEmpty()) System.out.println("Current value: " + currentValue);
+            String currString = null;
+            try {
+                currString = readInputString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return currString != null && currString.isEmpty() ? currentValue : currString;
+        }
+
+        default boolean checkAction(int selectedElement, int minElem, int maxElem) {
+            return selectedElement >= minElem && selectedElement <= maxElem;
+        }
+
+        default int readAction() {
+            int selectedElement;
+            while (true) {
+                try {
+                    selectedElement = Integer.parseInt(readInputString());
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("incorrect number! Make your choice:");
+                } catch (IOException e) {
+                    System.out.println("An error while reading input number!");
+                    System.exit(0);
+                }
+            }
+            return selectedElement;
+        }
+
+        default String readInputString() throws IOException {
+            String data;
+            try {
+                data = reader.readLine();
+            } catch (IOException e) {
+                throw new IOException(e);
+            }
+            return data.trim();
+        }
+    }
+  learner_created: true
+- name: src/carsharing/controller/ControllerDB.java
+  visible: true
+  text: |
+    package carsharing.controller;
+
+    import carsharing.mapper.Mapper;
+
+    import java.sql.*;
+    import java.util.ArrayList;
+    import java.util.List;
+
+    public class ControllerDB {
+        private final String dbName;
+
+        public ControllerDB(String dbName) {
+            this.dbName = dbName;
+        }
+
+        public String getDbName() {
+            return dbName;
+        }
+
+        public String getDbURL() {
+            return "jdbc:h2:./src/carsharing/db/"+getDbName();
+        }
+
+        public void initDB() {
+            String[] sqlRequests = {"CREATE TABLE IF NOT EXISTS COMPANY  " +
+                    "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
+                    " NAME  VARCHAR(255) NOT NULL," +
+                    " UNIQUE (NAME)," +
+                    "PRIMARY KEY ( ID ))",
+                    "CREATE TABLE IF NOT EXISTS CAR  " +
+                            "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
+                            " NAME  VARCHAR(255) NOT NULL," +
+                            " COMPANY_ID  INTEGER NOT NULL," +
+                            " UNIQUE (NAME)," +
+                            "PRIMARY KEY ( ID ),"+
+                            "FOREIGN KEY (COMPANY_ID) REFERENCES COMPANY(ID))"};
+            try (Connection conn = DriverManager.getConnection(getDbURL());
+                 Statement stmt = conn.createStatement()) {
+                for (int i = 0; i < sqlRequests.length; i++) {
+                    stmt.executeUpdate(sqlRequests[i]);
+                }
+                conn.setAutoCommit(true);
+            } catch (SQLException se) {
+                //Handle errors for JDBC
+                se.printStackTrace();
+            }
+        }
+
+        public <T>T queryForObject(String sql, Mapper<T> mapper) {
+            try (Connection conn = DriverManager.getConnection(getDbURL());
+                 Statement stmt = conn.createStatement()) {
+                conn.setAutoCommit(true);
+
+                ResultSet resultSet = stmt.executeQuery(sql);
+                return mapper.mapRow(resultSet);
+
+            } catch (SQLException se) {
+                //Handle errors for JDBC
+                se.printStackTrace();
+            }
+            return null;
+        }
+
+        public <T> List<T> query(String sql, Mapper<T> companyMapper) {
+            List<T> companyList = new ArrayList<>();
+            try (Connection conn = DriverManager.getConnection(getDbURL());
+                 Statement stmt = conn.createStatement()) {
+                conn.setAutoCommit(true);
+
+                ResultSet resultSet = stmt.executeQuery(sql);
+                return companyMapper.mapRows(resultSet);
+
+            } catch (SQLException se) {
+                //Handle errors for JDBC
+                se.printStackTrace();
+            }
+            return companyList;
+        }
+
+        public int update(String sql) {
+            try (Connection conn = DriverManager.getConnection(getDbURL());
+                 Statement stmt = conn.createStatement()) {
+                conn.setAutoCommit(true);
+
+                return stmt.executeUpdate(sql);
+            } catch (SQLException se) {
+                //Handle errors for JDBC
+                se.printStackTrace();
+            }
+            return 0;
+        }
+    }
+  learner_created: true
+- name: src/carsharing/mapper/Mapper.java
+  visible: true
+  text: |
+    package carsharing.mapper;
+
+    import java.sql.ResultSet;
+    import java.sql.SQLException;
+    import java.util.List;
+
+    public interface Mapper <T> {
+        T mapRow(ResultSet resultSet) throws SQLException;
+        List<T> mapRows(ResultSet resultSet) throws SQLException;
+    }
+  learner_created: true
+- name: src.trace.db
+  visible: true
+  learner_created: true
+- name: src/carsharing/Main.java
+  visible: true
+  text: |-
+    package carsharing;
+
+    public class Main {
+
+        public static void main(String[] args) {
+            // write your code here
+        }
+    }
+  learner_created: false
 feedback_link: https://hyperskill.org/learn/step/11504#comment
-status: Unchecked
+status: Failed
+feedback:
+  message: |-
+    Error in test #8
+
+    In this test, the program is running for a long time, more than 15 seconds. Most likely, the program has gone into an infinite loop.
+
+    Please find below the output of your program during this failed test.
+    Note that the &#39;&gt;&#39; character indicates the beginning of the input line.
+
+    ---
+
+    Arguments: -databaseFileName carsharing
+
+    1. Log in as a manager
+    2. Log in as a customer
+    3. Create a customer
+    0. Exit
+    &gt; 2
+    Customer list:
+    The customer list is empty!
+
+    1. Log in as a manager
+    2. Log in as a customer
+    3. Create a customer
+    0. Exit
+    &gt; 3
+    Enter the customer name:
+    &gt; First customer
+    The customer First customer successfully created!
+
+    1. Log in as a manager
+    2. Log in as a customer
+    3. Create a customer
+    0. Exit
+    &gt; 3
+    Enter the customer name:
+    &gt; Second customer
+    The customer Second customer successfully created!
+
+    1. Log in as a manager
+    2. Log in as a customer
+    3. Create a customer
+    0. Exit
+    &gt; 2
+    Customer list:
+    1. First customer
+    2. Second customer
+    0. Back
+
+    &gt; 1
+    1. Rent a car
+    2. Return a rented car
+    3. My rented car
+    0. Back
+    &gt; 3
+  time: Mon, 12 Dec 2022 21:49:27 UTC
 record: -1

@@ -1,12 +1,7 @@
 package carsharing.service;
 
 import carsharing.dao.CarDAO;
-import carsharing.dao.CompanyDAO;
-import carsharing.dao.Dao;
 import carsharing.model.Car;
-import carsharing.model.Company;
-
-import java.sql.SQLException;
 import java.util.List;
 
 public class CarService {

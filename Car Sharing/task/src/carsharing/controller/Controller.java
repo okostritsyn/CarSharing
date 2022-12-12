@@ -7,17 +7,26 @@ import java.util.List;
 
 public abstract class Controller {
     public static final int MAIN_MENU_ACTION = 0;
-    public static final int FINISH_ACTION = 9;
     public static final int COMPANY_MENU = 1;
-    public static final int ADD_COMPANY = 3;
-    public static final int READ_COMPANY_LIST = 2;
+    public static final int READ_CUSTOMER_LIST = 2;
+    public static final int ADD_CUSTOMER = 3;
 
-    public static final int SHIFT_MENU_COMPANY = 1;
-    public static final int SHIFT_MENU_CAR = 4;
+    public static final int SHIFT_MENU_COMPANY = 3;
+    public static final int READ_COMPANY_LIST = 4;
+    public static final int ADD_COMPANY = 5;
 
-    public static final int COMPANY_CAR_MENU = 4;
-    public static final int ADD_CAR = 6;
-    public static final int READ_CAR_LIST = 5;
+    public static final int SHIFT_MENU_CAR = 6;
+    public static final int COMPANY_CAR_MENU = 6;
+    public static final int READ_CAR_LIST = 7;
+    public static final int ADD_CAR = 8;
+
+    public static final int SHIFT_MENU_CUSTOMER = 9;
+    public static final int CUSTOMER_CAR_MENU = 9;
+    public static final int CUSTOMER_RENT_CAR = 10;
+    public static final int CUSTOMER_RETURN_CAR = 11;
+    public static final int CUSTOMER_LIST_CAR = 12;
+
+    public static final int FINISH_ACTION = 99;
 
     protected View view;
     protected int action;

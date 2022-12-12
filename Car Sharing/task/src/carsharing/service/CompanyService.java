@@ -2,8 +2,6 @@ package carsharing.service;
 
 import carsharing.dao.CompanyDAO;
 import carsharing.model.Company;
-
-import java.sql.SQLException;
 import java.util.List;
 
 public class CompanyService {

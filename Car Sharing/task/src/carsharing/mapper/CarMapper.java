@@ -1,10 +1,6 @@
 package carsharing.mapper;
 
-import carsharing.dao.CarDAO;
 import carsharing.model.Car;
-import carsharing.model.Company;
-import carsharing.service.CarService;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

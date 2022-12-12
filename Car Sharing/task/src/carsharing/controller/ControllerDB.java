@@ -33,7 +33,14 @@ public class ControllerDB {
                         " COMPANY_ID  INTEGER NOT NULL," +
                         " UNIQUE (NAME)," +
                         "PRIMARY KEY ( ID ),"+
-                        "FOREIGN KEY (COMPANY_ID) REFERENCES COMPANY(ID))"};
+                        "FOREIGN KEY (COMPANY_ID) REFERENCES COMPANY(ID))",
+                "CREATE TABLE IF NOT EXISTS CUSTOMER  " +
+                        "(ID INTEGER AUTO_INCREMENT NOT NULL, " +
+                        " NAME  VARCHAR(255) NOT NULL," +
+                        " RENTED_CAR_ID  INTEGER," +
+                        " UNIQUE (NAME)," +
+                        "PRIMARY KEY ( ID ),"+
+                        "FOREIGN KEY (RENTED_CAR_ID) REFERENCES CAR(ID))"};
         try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
             for (int i = 0; i < sqlRequests.length; i++) {
