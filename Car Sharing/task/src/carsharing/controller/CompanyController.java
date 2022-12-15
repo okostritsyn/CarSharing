@@ -4,7 +4,6 @@ import carsharing.view.AddCompanyView;
 import carsharing.view.CompanyListView;
 import carsharing.exceptions.EmptyListOfControllersException;
 import carsharing.view.View;
-import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -3,7 +3,6 @@ package carsharing.controller;
 import carsharing.exceptions.EmptyListOfControllersException;
 import carsharing.model.Company;
 import carsharing.view.*;
-import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 

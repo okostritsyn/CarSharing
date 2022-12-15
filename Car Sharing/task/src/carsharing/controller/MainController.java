@@ -2,7 +2,6 @@ package carsharing.controller;
 
 import carsharing.view.*;
 import carsharing.exceptions.EmptyListOfControllersException;
-import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 
