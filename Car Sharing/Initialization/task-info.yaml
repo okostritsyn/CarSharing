@@ -221,9 +221,9 @@ files:
 - name: src.trace.db
   visible: true
   learner_created: true
-feedback_link: https://hyperskill.org/projects/140/stages/758/implement#comment
+feedback_link: https://hyperskill.org/learn/step/11501#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Thu, 08 Dec 2022 20:29:47 UTC
-record: -1
+record: 1
