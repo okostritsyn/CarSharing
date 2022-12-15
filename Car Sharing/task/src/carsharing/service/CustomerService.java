@@ -2,7 +2,6 @@ package carsharing.service;
 
 import carsharing.dao.CustomerDAO;
 import carsharing.model.Customer;
-
 import java.util.List;
 
 public class CustomerService {
@@ -21,7 +20,15 @@ public class CustomerService {
         return dao.findAll();
     }
 
-    public List<Customer> listByCompanyId(int id) {
-        return dao.findByOwner("rented_car_id",id);
+    public boolean rentCar(Customer customer, int idCar) {
+        var status = dao.rentCar(customer.getId(),idCar);
+        if (status) customer.setRentedCarId(idCar);
+        return status;
+    }
+
+    public boolean returnCar(Customer customer) {
+        var status = dao.returnCar(customer.getId());
+        if (status) customer.setRentedCarId(null);
+        return status;
     }
 }

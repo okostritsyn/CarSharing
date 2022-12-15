@@ -1,11 +1,7 @@
 package carsharing.controller;
 
-import carsharing.dao.CarDAO;
 import carsharing.dao.CustomerDAO;
-import carsharing.model.Car;
-import carsharing.model.Company;
 import carsharing.model.Customer;
-import carsharing.service.CarService;
 import carsharing.service.CustomerService;
 import carsharing.view.View;
 
@@ -24,11 +20,11 @@ public class AddCustomerController extends Controller{
         customer.setName(name);
         var status = new CustomerService(new CustomerDAO(getControllerDB())).save(customer);
         if (status) {
-            System.out.println("The customer " + name + " successfully created!");
+            view.printMessage("The customer " + name + " successfully created!");
         } else{
-            System.out.println("The customer " + name + " has not been created! ");
+            view.printMessage("The customer " + name + " has not been created! ");
         }
-        System.out.println("");
+        view.printMessage("");
     }
 
     @Override

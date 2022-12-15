@@ -16,11 +16,11 @@ public class CarService {
         return dao.create(car);
     }
 
-    public List<Car> listAll() {
-        return dao.findAll();
-    }
-
     public List<Car> listByCompanyId(int id) {
         return dao.findByOwner("company_id",id);
+    }
+
+    public Car getById(int id) {
+        return dao.findById(id);
     }
 }

@@ -1,24 +1,23 @@
 package carsharing.controller;
 
 import carsharing.exceptions.EmptyListOfControllersException;
-import carsharing.model.Company;
 import carsharing.model.Customer;
-import carsharing.view.AddCarView;
-import carsharing.view.CompanyCarListView;
-import carsharing.view.View;
+import carsharing.view.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//@Slf4j
 public class CustomerCarController extends Controller {
     private final List<Controller> controllers = new ArrayList<>(4);
 
     public CustomerCarController(View mainView, Customer customer){
         super(mainView,Controller.CUSTOMER_CAR_MENU);
         controllers.add(this);
-       // controllers.add(new CompanyCarListController(new CompanyCarListView(),Controller.CUSTOMER_LIST_CAR,company));
-       // controllers.add(new AddCarController(new AddCarView(),Controller.ADD_CAR,company));
-       // controllers.add(new CompanyCarListController(new CompanyCarListView(),Controller.READ_CAR_LIST,company));
+        controllers.add(new CustomerRentController(new CompanyListView(),Controller.CUSTOMER_RENT_CAR,customer));
+        controllers.add(new ReturnRentCarController(new ReturnRentCarView(),Controller.CUSTOMER_RETURN_CAR,customer));
+        controllers.add(new CustomerCarListController(new CustomerCarListView(),Controller.CUSTOMER_LIST_CAR,customer));
     }
 
     @Override
@@ -27,15 +26,13 @@ public class CustomerCarController extends Controller {
     @Override
     public int process() {
         int action = super.process();
-        int finishAction = Controller.MAIN_MENU_ACTION;
         if (action != 0) {
             try {
-                return processMenu(action,finishAction,controllers);
+                return processMenu(action, Controller.MAIN_MENU_ACTION,controllers);
             } catch (EmptyListOfControllersException e) {
-                System.out.println("There is no controllers to process! "+e);
-                action = finishAction;
+                //log.warn("CustomerCarController: There is no controllers to process! "+e);
             }
         }
-        return action;
+        return Controller.MAIN_MENU_ACTION;
     }
 }

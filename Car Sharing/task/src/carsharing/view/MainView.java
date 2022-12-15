@@ -9,7 +9,7 @@ public class MainView implements View {
         int selectedElement = View.super.readAction();
 
         while (!checkAction(selectedElement, 0, 3)) {
-            System.out.println("incorrect number! Make your choice: ");
+            printMessage("incorrect number! Make your choice: ");
             selectedElement = View.super.readAction();
         }
 
@@ -21,9 +21,9 @@ public class MainView implements View {
 
     @Override
     public void printInfo() {
-        System.out.println("1. Log in as a manager");
-        System.out.println("2. Log in as a customer");
-        System.out.println("3. Create a customer");
-        System.out.println("0. Exit");
+        printMessage("1. Log in as a manager");
+        printMessage("2. Log in as a customer");
+        printMessage("3. Create a customer");
+        printMessage("0. Exit");
     }
 }

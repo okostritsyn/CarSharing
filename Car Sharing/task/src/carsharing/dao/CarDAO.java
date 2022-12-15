@@ -3,7 +3,6 @@ package carsharing.dao;
 import carsharing.controller.ControllerDB;
 import carsharing.mapper.CarMapper;
 import carsharing.model.Car;
-import carsharing.model.Company;
 
 import java.util.List;
 
@@ -16,7 +15,10 @@ public class CarDAO implements Dao{
 
     private static final String SQL_GET_ALL = "select name,id,company_id from car ORDER BY car.id";
     private static final String SQL_INSERT_CAR = "insert into car (name,company_id) values('value_name','value_id')";
-    private static final String SQL_GET_BY_OWNER = "select name,id,company_id from car where owner_id = 'value_id' ORDER BY car.id";
+    private static final String SQL_GET_BY_OWNER = "select car.name,car.id,car.company_id from car " +
+            "LEFT JOIN customer on car.id = customer.rented_car_id " +
+            "where car.owner_id = 'value_id' and customer.id IS NULL ORDER BY car.id";
+    private static final String SQL_GET_BY_ID = "select name,id,company_id from car where car.id = 'value_id'";
 
     @Override
     public boolean create(Object obj) {
@@ -28,8 +30,8 @@ public class CarDAO implements Dao{
     }
 
     @Override
-    public Company findById(int id) {
-        return null;
+    public Car findById(int id) {
+        return jdbcController.queryForObject(SQL_GET_BY_ID.replace("value_id", String.valueOf(id)),new CarMapper());
     }
 
     @Override

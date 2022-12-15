@@ -1,11 +1,13 @@
 package carsharing.controller;
 
 import carsharing.mapper.Mapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//@Slf4j
 public class ControllerDB {
     private final String dbName;
 
@@ -43,11 +45,13 @@ public class ControllerDB {
                         "FOREIGN KEY (RENTED_CAR_ID) REFERENCES CAR(ID))"};
         try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
-            for (int i = 0; i < sqlRequests.length; i++) {
-                stmt.executeUpdate(sqlRequests[i]);
+            for (String sqlRequest : sqlRequests) {
+               // log.info(sqlRequest);
+                stmt.executeUpdate(sqlRequest);
             }
             conn.setAutoCommit(true);
         } catch (SQLException se) {
+            //log.warn("An error while init DB"+se.getMessage());
             //Handle errors for JDBC
             se.printStackTrace();
         }
@@ -57,12 +61,18 @@ public class ControllerDB {
         try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
             conn.setAutoCommit(true);
-
+            //log.info(sql);
             ResultSet resultSet = stmt.executeQuery(sql);
-            return mapper.mapRow(resultSet);
+            if (resultSet.next()) return mapper.mapRow(resultSet);
+
+            //log.warn("resultSet is empty!");
+
+            return null;
 
         } catch (SQLException se) {
             //Handle errors for JDBC
+            //log.warn("An error while queryForObject"+se.getMessage());
+
             se.printStackTrace();
         }
         return null;
@@ -73,12 +83,14 @@ public class ControllerDB {
         try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
             conn.setAutoCommit(true);
-
+            //log.info(sql);
             ResultSet resultSet = stmt.executeQuery(sql);
             return companyMapper.mapRows(resultSet);
 
         } catch (SQLException se) {
             //Handle errors for JDBC
+            //log.warn("An error while query"+se.getMessage());
+
             se.printStackTrace();
         }
         return companyList;
@@ -88,10 +100,12 @@ public class ControllerDB {
         try (Connection conn = DriverManager.getConnection(getDbURL());
              Statement stmt = conn.createStatement()) {
             conn.setAutoCommit(true);
-
+            //log.info(sql);
             return stmt.executeUpdate(sql);
         } catch (SQLException se) {
             //Handle errors for JDBC
+            //log.warn("An error while update"+se.getMessage());
+
             se.printStackTrace();
         }
         return 0;

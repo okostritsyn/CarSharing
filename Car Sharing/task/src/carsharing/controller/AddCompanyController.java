@@ -19,11 +19,11 @@ public class AddCompanyController extends Controller{
         company.setName(name);
         var status = new CompanyService(new CompanyDAO(getControllerDB())).save(company);
         if (status) {
-            System.out.println("The company " + name + " successfully created!");
+            view.printMessage("The company " + name + " successfully created!");
         } else{
-            System.out.println("The company " + name + " has not been created! ");
+            view.printMessage("The company " + name + " has not been created!");
         }
-        System.out.println("");
+        view.printMessage("");
     }
 
     @Override

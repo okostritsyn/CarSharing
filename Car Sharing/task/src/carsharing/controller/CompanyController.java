@@ -4,10 +4,11 @@ import carsharing.view.AddCompanyView;
 import carsharing.view.CompanyListView;
 import carsharing.exceptions.EmptyListOfControllersException;
 import carsharing.view.View;
-
+import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 
+//@Slf4j
 public class CompanyController extends Controller {
     private final List<Controller> controllers = new ArrayList<>(3);
 
@@ -29,7 +30,7 @@ public class CompanyController extends Controller {
             try {
                 return processMenu(action,Controller.COMPANY_MENU,controllers);
             } catch (EmptyListOfControllersException e) {
-                System.out.println("There is no controllers to process! "+e);
+              // log.warn("CompanyController: There is no controllers to process! "+e);
             }
         }
         return Controller.MAIN_MENU_ACTION;

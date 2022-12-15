@@ -7,7 +7,7 @@ import carsharing.service.CarService;
 import carsharing.view.View;
 
 public class AddCarController extends Controller{
-    private Company company;
+    private final Company company;
 
     protected AddCarController(View view, int action, Company company) {
         super(view, action);
@@ -24,11 +24,11 @@ public class AddCarController extends Controller{
         car.setCompanyId(company.getId());
         var status = new CarService(new CarDAO(getControllerDB())).save(car);
         if (status) {
-            System.out.println("The car " + name + " successfully created!");
+            view.printMessage("The car " + name + " successfully created!");
         } else{
-            System.out.println("The car " + name + " has not been created! ");
+            view.printMessage("The car " + name + " has not been created!");
         }
-        System.out.println("");
+        view.printMessage("");
     }
 
     @Override

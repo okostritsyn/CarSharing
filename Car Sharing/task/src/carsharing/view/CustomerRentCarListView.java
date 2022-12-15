@@ -1,23 +1,28 @@
 package carsharing.view;
 
-import carsharing.controller.Controller;
 import carsharing.model.Car;
+import carsharing.model.Company;
 
 import java.util.List;
 
-public class CompanyCarListView implements View {
+public class CustomerRentCarListView implements View {
     private List<Car> carList;
+    private final Company company;
+
+    public CustomerRentCarListView(Company company) {
+        this.company = company;
+    }
 
     @Override
     public void printInfo() {
-        printMessage("Car list:");
+        printMessage("Choose a car:");
     }
 
     public void printCarList(List<Car> carList) {
         this.carList = carList;
 
         if (carList.isEmpty()){
-            printMessage("The car list is empty!");
+            printMessage("No available cars in the "+company.getName()+" company.");
             printMessage("");
             return;
         }
@@ -27,6 +32,7 @@ public class CompanyCarListView implements View {
             printMessage((i+1)+". "+currCar);
         }
 
+        printMessage("0.Back");
         printMessage("");
     }
 
@@ -37,10 +43,6 @@ public class CompanyCarListView implements View {
         while(!checkAction(selectedElement,0,this.carList.size())){
             printMessage("incorrect number! Make your choice: ");
             selectedElement = View.super.readAction();
-        }
-
-        if (selectedElement==0) {
-            return Controller.COMPANY_MENU;
         }
 
         return selectedElement;

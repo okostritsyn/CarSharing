@@ -1,11 +1,7 @@
 package carsharing.controller;
 
-import carsharing.dao.CompanyDAO;
 import carsharing.dao.CustomerDAO;
-import carsharing.exceptions.EmptyListOfControllersException;
-import carsharing.model.Company;
 import carsharing.model.Customer;
-import carsharing.service.CompanyService;
 import carsharing.service.CustomerService;
 import carsharing.view.*;
 
@@ -21,20 +17,19 @@ public class CustomerController extends Controller {
         view.printInfo();
 
         List<Customer> customerList = new CustomerService(new CustomerDAO(getControllerDB())).listAll();
-        ((CustomerListView) view).printCompanyList(customerList);
-        if (customerList.isEmpty()) return Controller.MAIN_MENU_ACTION;
-
-        int action = view.readAction();
-        int finAction;
-        if (action != 0) {
-            do {
-                var customer = customerList.get(action-1);
-                View customerView = new CustomerCarMenuView(customer);
-                Controller customerController = new CustomerCarController(customerView,customer);
-                finAction = customerController.process();
-            } while (finAction != Controller.MAIN_MENU_ACTION);
+        ((CustomerListView) view).printCustomerList(customerList);
+        if (!customerList.isEmpty()) {
+            int action = view.readAction();
+            int finAction;
+            if (action != 0) {
+                do {
+                    var customer = customerList.get(action - 1);
+                    View customerView = new CustomerCarMenuView();
+                    Controller customerController = new CustomerCarController(customerView, customer);
+                    finAction = customerController.process();
+                } while (finAction != Controller.MAIN_MENU_ACTION);
+            }
         }
-
         return Controller.MAIN_MENU_ACTION;
     }
 }

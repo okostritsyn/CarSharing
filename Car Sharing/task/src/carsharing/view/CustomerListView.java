@@ -10,24 +10,24 @@ public class CustomerListView implements View {
 
     @Override
     public void printInfo() {
-        System.out.println("Customer list:");
+        printMessage("Customer list:");
     }
 
-    public void printCompanyList(List<Customer> customerList) {
+    public void printCustomerList(List<Customer> customerList) {
         this.customerList = customerList;
 
         if (customerList.isEmpty()){
-            System.out.println("The customer list is empty!");
-            System.out.println("");
+            printMessage("The customer list is empty!");
+            printMessage("");
             return;
         }
 
         for (int i = 0, companyListSize = customerList.size(); i < companyListSize; i++) {
             Customer currCustomer = customerList.get(i);
-            System.out.println((i+1)+". "+currCustomer);
+            printMessage((i+1)+". "+currCustomer);
         }
-        System.out.println("0. Back");
-        System.out.println("");
+        printMessage("0. Back");
+        printMessage("");
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CustomerListView implements View {
         int selectedElement = View.super.readAction();
 
         while(!checkAction(selectedElement,0,this.customerList.size())){
-            System.out.println("incorrect number! Make your choice: ");
+            printMessage("incorrect number! Make your choice: ");
             selectedElement = View.super.readAction();
         }
 

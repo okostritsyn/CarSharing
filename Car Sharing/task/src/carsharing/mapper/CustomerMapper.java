@@ -13,7 +13,8 @@ public class CustomerMapper implements Mapper<Customer>{
         Customer currCustomer = new Customer();
         currCustomer.setName(resultSet.getString("name"));
         currCustomer.setId(resultSet.getInt("id"));
-        currCustomer.setRentedCarId(resultSet.getInt("rented_car_id"));
+        var rentCarId = resultSet.getInt("rented_car_id");
+        currCustomer.setRentedCarId(resultSet.wasNull()?null:rentCarId);
         return currCustomer;
     }
 

@@ -1,21 +1,18 @@
 package carsharing.view;
 import carsharing.controller.Controller;
-import carsharing.model.Customer;
-
 
 public class CustomerCarMenuView implements View {
-    private Customer customer;
 
-    public CustomerCarMenuView(Customer customer) {
-        this.customer = customer;
+    public CustomerCarMenuView() {
+
     }
 
     @Override
     public void printInfo() {
-        System.out.println("1. Rent a car");
-        System.out.println("2. Return a rented car");
-        System.out.println("3. My rented car");
-        System.out.println("0. Back");
+        printMessage("1. Rent a car");
+        printMessage("2. Return a rented car");
+        printMessage("3. My rented car");
+        printMessage("0. Back");
     }
 
     @Override
@@ -23,7 +20,7 @@ public class CustomerCarMenuView implements View {
         int selectedElement = View.super.readAction();
 
         while(!checkAction(selectedElement,0,3)){
-            System.out.println("incorrect number! Make your choice: ");
+            printMessage("incorrect number! Make your choice: ");
             selectedElement = View.super.readAction();
         }
 

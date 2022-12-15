@@ -1,5 +1,8 @@
 package carsharing.model;
 
+import lombok.Data;
+
+@Data
 public class Company {
     private String name;
     private Integer id;
@@ -9,19 +12,4 @@ public class Company {
         return getName();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

@@ -9,9 +9,11 @@ public interface View {
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
+    default void printMessage(String message){System.out.println(message); }
+
     default String collectDataFromUser(String message, String currentValue) {
-        System.out.println(message);
-        if (!currentValue.isEmpty()) System.out.println("Current value: " + currentValue);
+        printMessage(message);
+        if (!currentValue.isEmpty()) printMessage("Current value: " + currentValue);
         String currString = null;
         try {
             currString = readInputString();
@@ -32,9 +34,9 @@ public interface View {
                 selectedElement = Integer.parseInt(readInputString());
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("incorrect number! Make your choice:");
+                printMessage("incorrect number! Make your choice:");
             } catch (IOException e) {
-                System.out.println("An error while reading input number!");
+                printMessage("An error while reading input number!");
                 System.exit(0);
             }
         }

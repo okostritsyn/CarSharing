@@ -6,17 +6,21 @@ import java.util.List;
 
 public class CompanyService {
 
-    private final CompanyDAO companyDAO;
+    private final CompanyDAO dao;
 
     public CompanyService(CompanyDAO companyDAO) {
-        this.companyDAO = companyDAO;
+        this.dao = companyDAO;
     }
 
     public boolean save(Company company) {
-        return companyDAO.create(company);
+        return dao.create(company);
     }
 
     public List<Company> listAll() {
-        return companyDAO.findAll();
+        return dao.findAll();
+    }
+
+    public Company getById(int id) {
+        return dao.findById(id);
     }
 }

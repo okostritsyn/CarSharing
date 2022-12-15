@@ -3,10 +3,11 @@ package carsharing.controller;
 import carsharing.exceptions.EmptyListOfControllersException;
 import carsharing.model.Company;
 import carsharing.view.*;
-
+import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 
+//@Slf4j
 public class CompanyCarController extends Controller {
     private final List<Controller> controllers = new ArrayList<>(3);
 
@@ -28,7 +29,7 @@ public class CompanyCarController extends Controller {
             try {
                 return processMenu(action,finishAction,controllers);
             } catch (EmptyListOfControllersException e) {
-                System.out.println("There is no controllers to process! "+e);
+               // log.warn("CompanyCarController: There is no controllers to process! "+e);
                 action = finishAction;
             }
         }
